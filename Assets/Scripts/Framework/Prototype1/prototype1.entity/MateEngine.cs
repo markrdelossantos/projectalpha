@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using GeneticsCore;
 
 public static class MateEngine
 {
@@ -19,14 +20,12 @@ public static class MateEngine
         {
             foreach( Genotype gene2 in bGenes)
             {
-                if (gene.GetType().IsAssignableFrom(gene2.GetType()) ||( gene is AppearanceGenotype && gene2 is AppearanceGenotype))
-                {
+                if (gene.isSameType(gene2)) {
                     Genotype newGenotype = gene.combineWith(gene2);
                     newGenotype.visit((PrototypeEntity)e);
                 }
             }
         }
-
         return e;
     }
 }

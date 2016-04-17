@@ -2,6 +2,9 @@
 using System.Collections;
 using System;
 using System.Collections.Generic;
+using GeneticsCore;
+using prototype1.genes;
+using prototype1.mutations;
 
 public class SpontaenousGeneration : ScriptableObject
 {
