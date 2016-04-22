@@ -6,8 +6,9 @@ using GeneticsCore;
 
 public class ControlManager : MonoBehaviour
 {
-    private List<GameObject> gos = new List<GameObject>();
-    private Vector3 spawnpoint = new Vector3(5, 0);
+    private List<GameObject> selectedGameObjects = new List<GameObject>();
+    private float yLevel = 5f;
+    private float xDistance = 5f;
 
     public void Update()
     {
@@ -36,31 +37,39 @@ public class ControlManager : MonoBehaviour
 
     private void handleLeftClick(GameObject other)
     {       
-        if (other.CompareTag("Entity") && gos.Count <= 1 && !gos.Contains(other))
+        if (other.CompareTag("Entity") && selectedGameObjects.Count <= 1 && !selectedGameObjects.Contains(other))
         {
             other.GetComponent<Renderer>().material.SetFloat("_Outline", .005f);
-            gos.Add(other);
+            selectedGameObjects.Add(other);
         }
-        else if (gos.Contains(other))
+        else if (selectedGameObjects.Contains(other))
         {
             other.GetComponent<Renderer>().material.SetFloat("_Outline", 0f);
-            gos.Remove(other);
+            selectedGameObjects.Remove(other);
         }
 
-        if (gos.Count == 2)
+        if (selectedGameObjects.Count == 2)
         {
-            EntityBridge eb1 = gos[0].GetComponent<EntityBridge>();
-            EntityBridge eb2 = gos[1].GetComponent<EntityBridge>();
+            EntityBridge eb1 = selectedGameObjects[0].GetComponent<EntityBridge>();
+            EntityBridge eb2 = selectedGameObjects[1].GetComponent<EntityBridge>();
 
             PrototypeEntity e = eb1.getEntity() as PrototypeEntity;
             PrototypeEntity e2 = eb2.getEntity() as PrototypeEntity;
 
-            spawnpoint = new Vector3(spawnpoint.x + 5, 0);
+            Vector3 spawnPoint = new Vector3(
+                getMid(selectedGameObjects[0].transform.localPosition.x, selectedGameObjects[1].transform.localPosition.x), 
+                selectedGameObjects[0].transform.localPosition.y - yLevel);
+
             Entity newEntity = MateEngine.mate(e, e2);
-            SpontaenousGeneration.spawn(newEntity, spawnpoint);
+            SpontaenousGeneration.spawn(newEntity, spawnPoint);
 
         }
 
+    }
+
+    private float getMid(float a, float b)
+    {
+        return (a + b) / 2;
     }
 }
 

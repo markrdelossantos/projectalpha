@@ -33,16 +33,13 @@ namespace prototype1.genes
 
         public override Genotype combineWith(Genotype gene)
         {
-       
             AppearanceGenotype other = gene as AppearanceGenotype;
 
             // get average size of both genes and add a little bit
             Vector3 newSize = getAverageSize(getSize(), other.getSize()) + sizeIncrement;
-            Debug.Log("New Size is" + newSize);
             PrimitiveType newType = myType;
 
             int randomNumber = UnityEngine.Random.Range(0, 100);
-            Debug.Log("Random number is " + randomNumber);
             if (randomNumber > 50)
             {
                 newType = other.getAppearance();
